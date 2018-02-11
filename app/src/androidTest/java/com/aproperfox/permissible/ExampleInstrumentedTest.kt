@@ -1,4 +1,4 @@
-package com.aproperfox.permissable
+package com.aproperfox.permissible
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

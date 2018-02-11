@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.aproperfox.permissable">
+  package="com.aproperfox.permissible">
 
   <uses-permission android:name="android.permission.CAMERA"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -12,5 +12,7 @@
     android:label="@string/app_name"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
-    android:theme="@style/AppTheme" />
+    android:theme="@style/AppTheme" >
+    <activity android:name="com.aproperfox.permissible.MainActivity" />
+  </application>
 </manifest>

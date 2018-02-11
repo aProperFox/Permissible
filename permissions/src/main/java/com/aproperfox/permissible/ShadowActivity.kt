@@ -1,4 +1,4 @@
-package com.aproperfox.permissable
+package com.aproperfox.permissible
 
 import android.annotation.TargetApi
 import android.app.Activity
@@ -6,15 +6,12 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.content.pm.PackageManager
 import android.content.pm.PackageManager.*
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.support.v4.content.PermissionChecker
 import android.util.Log
-import com.aproperfox.permissable.PermissionState.*
-import java.security.Permission
+import com.aproperfox.permissible.PermissionState.*
 
 /**
  * Created by aProperFox on 1/22/2018.

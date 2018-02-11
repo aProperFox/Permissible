@@ -1,4 +1,4 @@
-package com.aproperfox.permissable
+package com.aproperfox.permissible
 
 import org.junit.Test
 

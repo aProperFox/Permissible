@@ -1,4 +1,4 @@
-package com.aproperfox.permissable;
+package com.aproperfox.permissible;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

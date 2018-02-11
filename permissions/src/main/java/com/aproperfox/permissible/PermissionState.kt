@@ -1,4 +1,4 @@
-package com.aproperfox.permissable
+package com.aproperfox.permissible
 
 /**
 * Created by aProperFox on 1/22/2018.
