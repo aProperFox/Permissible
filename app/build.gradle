@@ -1,15 +1,13 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
-  compileSdkVersion 27
+  compileSdkVersion project.compileSdkVersion
   defaultConfig {
     applicationId "com.aproperfox.permissable"
-    minSdkVersion 23
-    targetSdkVersion 27
+    minSdkVersion project.minSdkVersion
+    targetSdkVersion project.targetSdkVersion
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
