@@ -2,6 +2,7 @@ package com.aproperfox.permissible
 
 import android.annotation.TargetApi
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Binder
@@ -16,6 +17,12 @@ class PermissionsService : Service() {
 
   companion object {
     private const val TAG = "PermissionsService"
+
+    fun newIntent(context: Context) = Intent(context, PermissionsService::class.java)
+  }
+
+  init {
+    Log.d(TAG, "STARTING")
   }
 
   private val binder: IBinder = PermissionBinder()
@@ -26,6 +33,9 @@ class PermissionsService : Service() {
   }
 
   private lateinit var permissionsState: Map<String, PermissionState>
+  private val listeners by lazy {
+    mutableListOf<(Map<String, PermissionState>) -> Unit>()
+  }
 
   override fun onCreate() {
     super.onCreate()
@@ -44,6 +54,14 @@ class PermissionsService : Service() {
   @TargetApi(Build.VERSION_CODES.M)
   fun requestPermissions(permissions: Array<String>) {
     startActivity(ShadowActivity.requestIntent(applicationContext, permissions))
+  }
+
+  fun addListener(listener: (Map<String, PermissionState>) -> Unit) {
+    listeners.add(listener)
+  }
+
+  fun removeListener(listener: (Map<String, PermissionState>) -> Unit) {
+    listeners.remove(listener)
   }
 
   internal fun setPermissionState(state: Map<String, PermissionState>) {

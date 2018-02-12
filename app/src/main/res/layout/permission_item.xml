@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="56dp"
+  android:paddingStart="16dp"
+  android:paddingEnd="16dp"
+  android:paddingTop="8dp"
+  android:paddingBottom="8dp">
+
+  <TextView
+    android:id="@+id/permissionLabel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/permission_label"
+    android:textColor="@android:color/black"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintBottom_toTopOf="@+id/permissionStatusLabel"
+    app:layout_constraintTop_toTopOf="parent"/>
+
+  <TextView
+    android:id="@+id/permissionStatusLabel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/permission_status"
+    android:textColor="@android:color/black"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/permissionLabel"/>
+
+  <TextView
+    android:id="@+id/permissionName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:textColor="#555555"
+    app:layout_constraintStart_toEndOf="@id/permissionLabel"
+    app:layout_constraintBottom_toTopOf="@+id/permissionState"
+    app:layout_constraintEnd_toStartOf="@+id/requestButton"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintHorizontal_bias="0"
+    tools:text="Camera" />
+
+  <TextView
+    android:id="@+id/permissionState"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    app:layout_constraintStart_toEndOf="@+id/permissionLabel"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/permissionName"
+    app:layout_constraintEnd_toStartOf="@+id/requestButton"
+    app:layout_constraintHorizontal_bias="0"
+    tools:text="Denied"
+    tools:textColor="@android:color/holo_red_light"/>
+
+  <android.support.v7.widget.AppCompatButton
+    android:id="@+id/requestButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/request_permission"
+    app:layout_constraintEnd_toEndOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

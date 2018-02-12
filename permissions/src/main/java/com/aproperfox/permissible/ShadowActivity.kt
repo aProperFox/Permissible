@@ -16,7 +16,7 @@ import com.aproperfox.permissible.PermissionState.*
 /**
  * Created by aProperFox on 1/22/2018.
  */
-class ShadowActivity private constructor() : Activity() {
+class ShadowActivity : Activity() {
 
   companion object {
     private const val TAG = "ShadowActivity"
@@ -40,36 +40,39 @@ class ShadowActivity private constructor() : Activity() {
 
   lateinit var checker: PermissionAskedChecker
 
-  override fun onCreate(savedInstanceState: Bundle) {
+  override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     checker = PermissionAskedChecker(
         getSharedPreferences("${applicationContext.packageName}-$PREF_SUFFIX", Context.MODE_PRIVATE)
     )
-    with(savedInstanceState, {
-      val permissions = getStringArray(PERMISSIONS_KEY)
-      if (getBoolean(IS_REQUESTING_KEY)) {
-        requestPermissions(permissions)
-      } else {
-        val splitPerms = permissions.partition { checker.hasAskedPermission(it) }
-        val permissionStates = getPermissionStates(splitPerms.first.toTypedArray()) +
-            splitPerms.second.map {
-              it to Unasked
+    savedInstanceState?.let {
+      with(it, {
+        val permissions = getStringArray(PERMISSIONS_KEY)
+        if (getBoolean(IS_REQUESTING_KEY)) {
+          requestPermissions(permissions)
+        } else {
+          val splitPerms = permissions.partition { checker.hasAskedPermission(it) }
+          val permissionStates = getPermissionStates(splitPerms.first.toTypedArray()) +
+              splitPerms.second.map {
+                it to Unasked
+              }
+          object : ServiceConnection {
+            override fun onServiceDisconnected(name: ComponentName) {
+              Log.d(TAG, "Service disconnected: $name")
             }
-        object : ServiceConnection {
-          override fun onServiceDisconnected(name: ComponentName) {
-            Log.d(TAG, "Service disconnected: $name")
-          }
 
-          override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            Log.d(TAG, "Service connected: $name. Service: $service")
-            if (service is PermissionsService.PermissionBinder) {
-              service.getService()
-                  .setPermissionState(permissionStates)
+            override fun onServiceConnected(name: ComponentName, service: IBinder) {
+              Log.d(TAG, "Service connected: $name. Service: $service")
+              if (service is PermissionsService.PermissionBinder) {
+                service.getService()
+                    .setPermissionState(permissionStates)
+                finish()
+              }
             }
           }
         }
-      }
-    })
+      })
+    }
   }
 
   @TargetApi(Build.VERSION_CODES.M)
@@ -96,6 +99,7 @@ class ShadowActivity private constructor() : Activity() {
           if (service is PermissionsService.PermissionBinder) {
             service.getService()
                 .setPermissionState(states)
+            finish()
           }
         }
       }
