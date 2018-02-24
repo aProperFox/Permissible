@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.IBinder
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import com.aproperfox.permissible.PermissionState
 import com.aproperfox.permissible.PermissionsService
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,12 +28,21 @@ class MainActivity : Activity(), ServiceConnection {
 
     recycler.adapter = adapter
     recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    adapter.listener = {
+      service.requestPermissions(arrayOf(it))
+    }
     bindService(Intent(this, PermissionsService::class.java), this, Context.BIND_AUTO_CREATE)
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    unbindService(this)
   }
 
   private val stateChangedListener: (Map<String, PermissionState>) -> Unit = {
     val viewState = it.entries
         .map {
+          Log.d("MainActivity", it.toString())
           PermissionViewState(it.key, it.value.name,
               when (it.value) {
                 PermissionState.Allowed -> Color.GREEN
@@ -41,7 +51,7 @@ class MainActivity : Activity(), ServiceConnection {
                 PermissionState.Unasked -> Color.GRAY
               })
         }
-    adapter.items = viewState
+    runOnUiThread({ adapter.items = viewState })
   }
 
   override fun onServiceDisconnected(name: ComponentName) {

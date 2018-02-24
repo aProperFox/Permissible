@@ -1,7 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.aproperfox.permissible" >
+  package="com.aproperfox.permissible">
+
   <application>
-    <service android:name=".PermissionsService"/>
-    <activity android:name=".ShadowActivity"/>
+    <service android:name=".PermissionsService" />
+    <activity
+      android:name=".ShadowActivity"
+      android:theme="@style/Theme.Transparent" />
   </application>
 </manifest>

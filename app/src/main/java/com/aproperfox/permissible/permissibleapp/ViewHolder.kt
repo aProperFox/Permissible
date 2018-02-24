@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.permission_item.view.*
  */
 class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
   fun bind(state: PermissionViewState) {
-    itemView.permissionName.text = state.name
+    itemView.permissionName.text = state.name.substringAfterLast('.', "")
     itemView.permissionState.apply {
       text = state.status
       setTextColor(state.statusColor)

@@ -32,19 +32,20 @@ class PermissionsService : Service() {
         this@PermissionsService
   }
 
-  private lateinit var permissionsState: Map<String, PermissionState>
+  private var permissionsState: Map<String, PermissionState> = emptyMap()
   private val listeners by lazy {
     mutableListOf<(Map<String, PermissionState>) -> Unit>()
   }
 
   override fun onCreate() {
     super.onCreate()
-    Log.d(TAG, "Package name: $packageName")
+    Log.d(TAG, "Package name: ${applicationContext.packageName}")
     val permissions = applicationContext.packageManager
         .getPackageInfo(
             applicationContext.packageName,
             PackageManager.GET_PERMISSIONS
         ).requestedPermissions
+
     startActivity(ShadowActivity.checkIntent(applicationContext, permissions))
   }
 
@@ -58,6 +59,7 @@ class PermissionsService : Service() {
 
   fun addListener(listener: (Map<String, PermissionState>) -> Unit) {
     listeners.add(listener)
+    listener.invoke(permissionsState)
   }
 
   fun removeListener(listener: (Map<String, PermissionState>) -> Unit) {
@@ -65,8 +67,12 @@ class PermissionsService : Service() {
   }
 
   internal fun setPermissionState(state: Map<String, PermissionState>) {
-    permissionsState = permissionsState.mapValues {
-      if (state.containsKey(it.key)) state[it.key]!! else it.value
+    val keys = state.keys.plus(permissionsState.keys)
+    permissionsState = keys.map {
+      it to (state[it] ?: permissionsState[it])!!
+    }.toMap()
+    listeners.forEach {
+      it.invoke(permissionsState)
     }
   }
 }
